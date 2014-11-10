@@ -19,8 +19,8 @@ targetx2 = 280
 targety2 = 80
 target = drawpad.create_rectangle(targetx1,targety1,targetx2,targety2, fill="blue")
 player = drawpad.create_rectangle(240,240,260,260, fill="pink")
-direction = 4
-
+direction = 2
+move = 10
 
 class MyApp:
 	def __init__(self, parent):
@@ -54,7 +54,6 @@ class MyApp:
 		# This creates the drawpad - no need to change this 
 		drawpad.pack()
 		self.animate()
-
 		
 	def moveUp(self, event):   
 		global player
@@ -82,13 +81,17 @@ class MyApp:
 	    tx1,ty1,tx2,ty2 = drawpad.coords(target)
 	    # Insert the code here to make the target move, bouncing on the edges
 	    #  This will trigger our collision detect function
-            didWeHit = self.collisionDetect()
+            
 	    drawpad.move(target,direction,0)
+	    
+            didWeHit = self.collisionDetect()
 	    if tx2 > drawpad.winfo_width():
-	        direction = -4
-	    elif xt1 < 0:
+	        direction = -20
+	        
+	    if tx1 < 0:
 	        direction = 4
-	    elif not didWeHit:
+	        
+	    if didWeHit == False:
                 drawpad.after(1,self.animate)
             
             # Use the value of didWeHit to create an if statement
@@ -100,10 +103,16 @@ class MyApp:
                 global target
 		global drawpad
                 global player
+                tx1,ty1,tx2,ty2 = drawpad.coords(target)
+                x1,y1,x2,y2 = drawpad.coords(player)
                 # Get the co-ordinates of our player AND our target
                 # using x1,y1,x2,y2 = drawpad.coords(object)
-
-                # Do your if statement - remember to return True if successful!                
+                if (x1 > tx1) and (x2 < tx2) and (y1 > ty1) and (y2 < ty2):
+                    return True
+                else:
+                    return False
+                # Do your if statement - remember to return True if successful!
+            
 		
 myapp = MyApp(root)
 
