@@ -86,7 +86,7 @@ class MyApp:
 	    
             didWeHit = self.collisionDetect()
 	    if tx2 > drawpad.winfo_width():
-	        direction = -20
+	        direction = -4
 	        
 	    if tx1 < 0:
 	        direction = 4
