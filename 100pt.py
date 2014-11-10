@@ -32,12 +32,25 @@ class MyApp:
 		
 		self.up = Button(self.myContainer1)
 		self.up.configure(text="Up", background= "green")
-		self.up.grid(row=0,column=0)
-					
+		self.up.grid(row=0,column=1)
+		
+		self.doun = Button(self.myContainer1)
+		self.doun.configure(text="doun", background= "green")
+		self.doun.grid(row=2,column=1)
+		
+		self.right = Button(self.myContainer1)
+		self.right.configure(text="right", background= "green")
+		self.right.grid(row=2,column=2)
+		
+		self.leaft = Button(self.myContainer1)
+		self.leaft.configure(text="leaft", background= "green")
+		self.leaft.grid(row=2,column=0)
+		
 		# "Bind" an action to the first button												
 		self.up.bind("<Button-1>", self.moveUp)
-                
-		  
+                self.doun.bind("<Button-1>",self.moveDoun)
+                self.right.bind("<Button-1>",self.moveRight)
+		self.leaft.bind("<Button-1>",self.moveLeaft)
 		# This creates the drawpad - no need to change this 
 		drawpad.pack()
 		self.animate()
@@ -48,21 +61,39 @@ class MyApp:
 		global drawpad
                 drawpad.move(player,0,-10)
     
-         
+        def moveDoun(self, event):   
+		global player
+		global drawpad
+                drawpad.move(player,0,10)
+                
+        def moveRight(self, event):   
+		global player
+		global drawpad
+                drawpad.move(player,10,0)
+                
+        def moveLeaft(self, event):   
+		global player
+		global drawpad
+                drawpad.move(player,-10,0)
         # Animate function that will bounce target left and right, and trigger the collision detection  
 	def animate(self):
 	    global target
 	    global direction
-	    
-	    # Insert the code here to make the target move, bouncing on the edges    
-	        
-	        
-            
-            
-            #  This will trigger our collision detect function
+	    tx1,ty1,tx2,ty2 = drawpad.coords(target)
+	    # Insert the code here to make the target move, bouncing on the edges
+	    #  This will trigger our collision detect function
             didWeHit = self.collisionDetect()
+	    drawpad.move(target,direction,0)
+	    if tx2 > drawpad.winfo_width():
+	        direction = -4
+	    elif xt1 < 0:
+	        direction = 4
+	    elif not didWeHit:
+                drawpad.after(1,self.animate)
+            
             # Use the value of didWeHit to create an if statement
             # that determines whether to run drawpad.after(1,self.animate) or not
+            
             
 	# Use a function to do our collision detection
 	def collisionDetect(self):
